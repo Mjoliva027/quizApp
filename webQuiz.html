@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interactive Quiz App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-xl text-center">
+    <h1 class="text-2xl font-bold mb-4">Interactive Quiz App</h1>
+
+    <!-- Progress Bar -->
+    <div class="w-full bg-gray-300 rounded-full h-2.5 mb-4">
+      <div id="progressBar" class="bg-blue-500 h-2.5 rounded-full" style="width: 0%;"></div>
+    </div>
+
+    <!-- Timer -->
+    <div id="timer" class="text-sm text-gray-600 mb-2">Time left: 15s</div>
+
+    <!-- Question -->
+    <div id="question" class="text-lg font-medium mb-4">Loading...</div>
+
+    <!-- Choices -->
+    <div id="choices" class="grid grid-cols-2 gap-4 mb-4">
+      <!-- Buttons inserted dynamically -->
+    </div>
+
+    <!-- Feedback -->
+    <div id="feedback" class="text-lg font-semibold mb-4 h-8"></div>
+
+    <!-- Score -->
+    <div id="score" class="mb-4 mt-10 text-gray-700"></div>
+
+    <!-- Next Button -->
+    <button id="nextBtn" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 disabled:opacity-50" disabled>
+      Next
+    </button>
+
+    <!-- Restart Button -->
+    <button id="restartBtn" class="mt-4 text-sm text-blue-600 underline hidden">
+      Restart Quiz
+    </button>
+  </div>
+
+  <script src="/webQuiz.js"></script>
+
+</body>
+</html>
