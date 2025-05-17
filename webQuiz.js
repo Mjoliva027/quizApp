@@ -45,6 +45,30 @@ const quizData = [
   const progressBar = document.getElementById("progressBar");
   const timerEl = document.getElementById("timer");
 
+  function launchConfetti() {
+    var duration = 2 * 1000;
+    var end = Date.now() + duration;
+  
+    (function frame() {
+      confetti({
+        particleCount: 5,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 }
+      });
+      confetti({
+        particleCount: 5,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 }
+      });
+  
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    })();
+  }
+
   function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -67,7 +91,7 @@ const quizData = [
     q.choices.forEach((choice, index) => {
       const btn = document.createElement("button");
       btn.textContent = choice;
-      btn.className = "bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded";
+      btn.className = "bg-gray-700 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded transition-colors duration-200"
       btn.onclick = () => handleAnswer(index, btn);
       choicesEl.appendChild(btn);
     });
@@ -119,6 +143,9 @@ const quizData = [
     nextBtn.style.display = "none";
     timerEl.textContent = '';
     restartBtn.classList.remove("hidden");
+
+    launchConfetti();
+
   }
 
   function restartQuiz() {
@@ -138,10 +165,10 @@ const quizData = [
 
   function startTimer() {
     timeLeft = 15;
-    timerEl.textContent = `Time left: ${timeLeft}s`;
+    timerEl.textContent = `⏰Time left: ${timeLeft}s`;
     timerInterval = setInterval(() => {
       timeLeft--;
-      timerEl.textContent = `Time left: ${timeLeft}s`;
+      timerEl.textContent = `⏰Time left: ${timeLeft}s`;
       if (timeLeft <= 0) {
         clearInterval(timerInterval);
         feedbackEl.textContent = "⏰ Time's up!";
@@ -154,7 +181,52 @@ const quizData = [
 
   nextBtn.addEventListener("click", nextQuestion);
   restartBtn.addEventListener("click", restartQuiz);
+// === PARTICLE BACKGROUND ===
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+let particles = [];
 
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+// Create particles
+for (let i = 0; i < 100; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 2 + 1,
+    dx: (Math.random() - 0.5) * 0.5,
+    dy: (Math.random() - 0.5) * 0.5
+  });
+}
+
+function drawParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Move
+    p.x += p.dx;
+    p.y += p.dy;
+
+    // Bounce
+    if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+  });
+
+  requestAnimationFrame(drawParticles);
+}
+
+drawParticles();
+  
   // Shuffle questions before starting
   shuffle(quizData);
   loadQuestion();
